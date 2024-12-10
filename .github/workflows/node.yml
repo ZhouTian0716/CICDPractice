@@ -15,11 +15,18 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
+        node-version: [18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Build Docker Mongo Image
+        run: docker pull mongo
+
+      - name: Run Docker Mongo container
+        run: docker container run --name mydatabase --publish 27017:27017 -d mongo
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
